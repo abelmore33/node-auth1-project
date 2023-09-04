@@ -79,3 +79,4 @@ router.post("/register", (req, res, next) => {
  */
 
 // Don't forget to add the router to the `exports` object so it can be required in other modules
+module.exports = router;

@@ -28,6 +28,9 @@ server.get("/", (req, res) => {
   res.json({ api: "up" });
 });
 
+server.use("/api/users", usersRouter);
+server.use("/api/auth/", authRouter);
+
 server.use((err, req, res, next) => {
   // eslint-disable-line
   res.status(err.status || 500).json({
@@ -35,8 +38,5 @@ server.use((err, req, res, next) => {
     stack: err.stack,
   });
 });
-
-server.use("/api/users", usersRouter);
-server.use("/api/auth/register", authRouter);
 
 module.exports = server;

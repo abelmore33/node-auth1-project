@@ -6,6 +6,7 @@
     "message": "You shall not pass!"
   }
 */
+const Users = require("../users/users-model");
 function restricted(req, res, next) {
   if (req.session.user) {
     next();
@@ -25,9 +26,21 @@ function restricted(req, res, next) {
     "message": "Username taken"
   }
 */
-function checkUsernameFree(req,res,next) {
-  const {username} = req.body
-  if()
+async function checkUsernameFree(req, res, next) {
+  try {
+    const potentialUser = await Users.findBy({ username: req.body.username });
+    console.log(potentialUser);
+    if (!potentialUser.length) {
+      next();
+    } else {
+      next({
+        status: 422,
+        message: "Username taken",
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
 }
 
 /*
@@ -38,7 +51,22 @@ function checkUsernameFree(req,res,next) {
     "message": "Invalid credentials"
   }
 */
-function checkUsernameExists(req,res,next) {}
+async function checkUsernameExists(req, res, next) {
+  try {
+    const potentialUser = await Users.findBy({ username: req.body.username });
+    console.log(potentialUser);
+    if (!potentialUser.length) {
+      next();
+    } else {
+      next({
+        status: 401,
+        message: "Invalid credentials",
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+}
 
 /*
   If password is missing from req.body, or if it's 3 chars or shorter
@@ -48,9 +76,20 @@ function checkUsernameExists(req,res,next) {}
     "message": "Password must be longer than 3 chars"
   }
 */
-function checkPasswordLength(req,res,next) {}
+function checkPasswordLength(req, res, next) {
+  const { password } = req.body;
+  if (!password || password.length <= 3) {
+    res.status(422).json({ message: "Password must be longer than 3 chars" });
+  } else {
+    next();
+  }
+}
 
 // Don't forget to add these to the `exports` object so they can be required in other modules
 module.exports = {
-  restricted,checkPasswordLength,checkUsernameFree,checkUsernameExists,restricted
+  restricted,
+  checkPasswordLength,
+  checkUsernameFree,
+  checkUsernameExists,
+  restricted,
 };

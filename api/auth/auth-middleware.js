@@ -29,7 +29,7 @@ function restricted(req, res, next) {
 async function checkUsernameFree(req, res, next) {
   try {
     const potentialUser = await Users.findBy({ username: req.body.username });
-    console.log(potentialUser);
+
     if (!potentialUser.length) {
       next();
     } else {
@@ -54,8 +54,10 @@ async function checkUsernameFree(req, res, next) {
 async function checkUsernameExists(req, res, next) {
   try {
     const potentialUser = await Users.findBy({ username: req.body.username });
-    console.log(potentialUser);
-    if (!potentialUser.length) {
+
+    if (potentialUser.length > 0) {
+      req.user = potentialUser[0];
+      console.log(req.user);
       next();
     } else {
       next({

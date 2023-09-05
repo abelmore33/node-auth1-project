@@ -16,7 +16,7 @@ router.post("/register", (req, res, next) => {
   };
   Users.add(newUser)
     .then((user) => {
-      res.status(200).json(user);
+      res.status(201).json(user);
     })
     .catch((err) => {
       next(err);
@@ -77,6 +77,10 @@ router.post("/register", (req, res, next) => {
     "message": "no session"
   }
  */
+
+  router.get('/logout',(req,res,next) => {
+
+  })
 
 // Don't forget to add the router to the `exports` object so it can be required in other modules
 module.exports = router;

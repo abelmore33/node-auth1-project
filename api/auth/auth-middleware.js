@@ -12,7 +12,7 @@ function restricted(req, res, next) {
     next();
   } else {
     next({
-      status: 422,
+      status: 401,
       message: "You shall not pass!",
     });
   }

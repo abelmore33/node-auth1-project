@@ -40,7 +40,6 @@ server.use(
     cookie: {
       maxAge: 1000 * 60 * 10,
       secure: false,
-      httpOnly: true,
     },
   })
 );
